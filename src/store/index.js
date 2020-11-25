@@ -28,4 +28,4 @@ const store = new Vuex.Store({
 export default store;
 
 // inital load
-store.dispatch("checkAuth");
+// store.dispatch("checkAuth");
