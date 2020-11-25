@@ -41,7 +41,9 @@
                   </button>
                 </div>
               </div>
-              <a href="#" @click="isLogin = false">Don't have an account? Register</a>
+              <a href="#" @click="isLogin = false"
+                >Don't have an account? Register</a
+              >
             </form>
           </template>
           <!-- end login form -->
@@ -116,13 +118,56 @@ export default {
       userData: {
         name: "",
         email: "",
-        password: ""
-      }
-    }
+        password: "",
+      },
+    };
   },
   methods: {
-    doRegister () {},
-    doLogin() {}
-  }
+    redirect() {
+      this.$router.push({ name: "Home" });
+    },
+    resetData() {
+      this.userData.name = this.userData.email = this.userData.password = "";
+    },
+    async doRegister() {
+      this.isLoading = true;
+      try {
+        // using namespaces on the store vuex
+        await this.$store.dispatch("user/doRegister", {
+          name: this.userData.name,
+          email: this.userData.email,
+          password: this.userData.password,
+        });
+        this.$toast.succes("Account created");
+        this.resetData();
+        this.redirect();
+      } catch (error) {
+        this.$toast.error(error.message);
+        console.error(error.message);
+      } finally {
+        // executes always even if there's an error
+        this.isLoading = false;
+      }
+    },
+    async doLogin() {
+      this.isLoading = true;
+      try {
+        // using namespaces on the store vuex
+        await this.$store.dispatch("user/doLogin", {
+          email: this.userData.email,
+          password: this.userData.password,
+        });
+        this.$toast.success("Logged in");
+        this.resetData();
+        this.redirect();
+      } catch (error) {
+        this.$toast.error(error.message);
+        console.error(error.message);
+      } finally {
+        // executes always even if there's an error
+        this.isLoading = false;
+      }
+    },
+  },
 };
 </script>

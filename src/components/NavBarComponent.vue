@@ -2,12 +2,12 @@
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a class="navbar-item" href="https://bulma.io">
-        <img class="navbar__logo" src="../assets/img/logo.jpg" alt="">
+        <img class="navbar__logo" src="../assets/img/logo.jpg" alt="" />
       </a>
 
       <a
         @click="toggleNavBar"
-        v-bind:class="{'is-active': isOpen}"
+        v-bind:class="{ 'is-active': isOpen }"
         role="button"
         class="navbar-burger burger"
         aria-label="menu"
@@ -20,7 +20,11 @@
       </a>
     </div>
 
-    <div id="navbarBasicExample" class="navbar-menu" v-bind:class="{'is-active': isOpen}">
+    <div
+      id="navbarBasicExample"
+      class="navbar-menu"
+      v-bind:class="{ 'is-active': isOpen }"
+    >
       <div class="navbar-start">
         <a class="navbar-item"> Home </a>
 
@@ -42,10 +46,12 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <a class="button is-primary">
-              <strong>Sign up</strong>
-            </a>
-            <a @click="doLogout" class="button is-light"> Log out </a>
+            <template>
+              <router-link class="button is-primary" to="/">
+                <strong>Profile</strong>
+              </router-link>
+              <a @click="doLogout" class="button is-light">Log out</a>
+            </template>
           </div>
         </div>
       </div>
@@ -54,32 +60,45 @@
 </template>
 
 <script>
-export default {
-    name: "NavBarComponent",
-    data() {
-        return {
-            isOpen: false
-        }
-    },
-    methods: {
-        // afunction for toggling the navbar
-        // bulma doesn't brings any javascript
-        toggleNavBar() {
-            this.isOpen = !this.isOpen
-        },
-        doLogout() {
+import { mapState } from "vuex";
 
-        }
-    }
+export default {
+  name: "NavBarComponent",
+  data() {
+    return {
+      isOpen: false,
+    };
+  },
+  methods: {
+    // afunction for toggling the navbar
+    // bulma doesn't brings any javascript
+    toggleNavBar() {
+      this.isOpen = !this.isOpen;
+    },
+    async doLogout() {
+      try {
+        await this.$store.dispatch("user/doLogout")
+        this.$router.push({ name: "auth" })
+        this.$toast.success("Logged out");
+      } catch (error) {
+        this.$toast.error(error.message);
+        console.error(error.message) 
+      }
+    },
+  },
+  computed: {
+    // module:user, property:[user]
+    ...mapState("user", ["user"]),
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .navbar-item img {
-    max-height: none;
+  max-height: none;
 }
 .navbar__logo {
-    width: 150px;
-    height: auto;
+  width: 150px;
+  height: auto;
 }
 </style>
