@@ -3,6 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+// import bulma
+require("./assets/css/main.scss");
+
+import { db } from "./firebase";
+console.log(db);
+
 Vue.config.productionTip = false
 
 new Vue({
