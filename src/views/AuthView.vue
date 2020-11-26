@@ -138,7 +138,7 @@ export default {
           email: this.userData.email,
           password: this.userData.password,
         });
-        this.$toast.succes("Account created");
+        this.$toast.success("Account created");
         this.resetData();
         this.redirect();
       } catch (error) {

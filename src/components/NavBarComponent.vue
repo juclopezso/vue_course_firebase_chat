@@ -45,7 +45,7 @@
         <div class="navbar-item">
           <div class="buttons">
             <template>
-              <router-link class="button is-primary" to="/">
+              <router-link class="button is-primary" :to="{ name: 'profile' }">
                 <strong>Profile</strong>
               </router-link>
               <a @click="doLogout" class="button is-light">Log out</a>

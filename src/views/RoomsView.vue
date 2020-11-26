@@ -17,7 +17,7 @@
 import { fb, auth } from "@/firebase.js"
 
 export default {
-  name: 'Home',
+  name: 'RoomsView',
   data() {
     return {
       user: null
