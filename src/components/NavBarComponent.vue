@@ -2,8 +2,8 @@
   <nav class="navbar" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <router-link class="navbar-item" to="/">
-        <img class="navbar__logo" src="../assets/img/logo.jpg" alt="" />
-      </router-link> 
+        <img class="navbar__logo" src="../assets/img/logo.png" alt="" />
+      </router-link>
 
       <a
         @click="toggleNavBar"
@@ -26,8 +26,12 @@
       v-bind:class="{ 'is-active': isOpen }"
     >
       <div class="navbar-start">
-        <router-link class="navbar-item" to="/">Home</router-link>
-        <router-link class="navbar-item" to="/">Create Room</router-link>
+        <router-link class="navbar-item" :to="{ name: 'home' }"
+          >Home</router-link
+        >
+        <router-link class="navbar-item" :to="{ name: 'create' }"
+          >Create Room</router-link
+        >
 
         <!-- <div class="navbar-item has-dropdown is-hoverable">
           <a class="navbar-link"> More </a>
@@ -75,12 +79,12 @@ export default {
     },
     async doLogout() {
       try {
-        await this.$store.dispatch("user/doLogout")
-        this.$router.push({ name: "auth" })
+        await this.$store.dispatch("user/doLogout");
+        this.$router.push({ name: "auth" });
         this.$toast.success("Logged out");
       } catch (error) {
         this.$toast.error(error.message);
-        console.error(error.message) 
+        console.error(error.message);
       }
     },
   },

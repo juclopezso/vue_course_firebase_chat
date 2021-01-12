@@ -1,8 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import RoomsView from '../views/RoomsView.vue'
-import AuthView from '../views/AuthView.vue'
-import UserProfileView from '../views/UserProfileView.vue'
 import store from '../store'
 
 Vue.use(VueRouter)
@@ -10,8 +7,9 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    component: RoomsView,
+    name: 'home',
+    // lazy loading: load the component only when is accessed
+    component: () => import('../views/RoomsView.vue'),
     meta: {
       requiresAuth: true
     }
@@ -19,16 +17,43 @@ const routes = [
   {
     path: '/auth',
     name: 'auth',
-    component: AuthView
+    component: () => import('../views/AuthView.vue')
   },
   {
     path: '/profile',
     name: 'profile',
-    component: UserProfileView,
+    component: () => import('../views/UserProfileView.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/create',
+    name: 'create',
+    component: () => import('../views/CreateRoom.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/update/:id',
+    props: true,
+    name: 'update',
+    component: () => import('../views/UpdateRoom.vue'),
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/view/:id',
+    props: true,
+    name: 'view',
+    component: () => import('../views/ViewRoom.vue'),
     meta: {
       requiresAuth: true
     }
   }
+
 ]
 
 const router = new VueRouter({
@@ -43,7 +68,7 @@ router.beforeEach(async (to, from, next) => {
     next({ name: "auth" });
   // no requires auth and user is auth
   } else if (!requiresAuth && (await store.dispatch("user/getCurrentUser"))) {
-    next({ name: "Home" });
+    next({ name: "home" });
   } else {
     next();
   }

@@ -158,7 +158,7 @@ export default {
   },
   methods: {
     redirect() {
-      this.$router.push({ name: "Home" });
+      this.$router.push({ name: "home" });
     },
     resetData() {
       this.userData.name = this.userData.email = this.userData.password = "";
@@ -207,8 +207,10 @@ export default {
       console.log(this.userData.email);
       try {
         // using namespaces on the store vuex
-        await this.$store.dispatch("user/doReset",this.userData.email);
-        this.$toast.success(`Please check ${this.userData.email} for further instructions`);
+        await this.$store.dispatch("user/doReset", this.userData.email);
+        this.$toast.success(
+          `Please check ${this.userData.email} for further instructions`
+        );
         this.resetData();
       } catch (error) {
         this.$toast.error(error.message);

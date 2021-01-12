@@ -1,50 +1,32 @@
 <template>
-  <div class="home">
-    <div class="section">
-      <div class="container has-text-center">
-        <template v-if="!user"></template>
-        <button v-if="!user" @click="doLogin" class="button">Login with Google</button>
-        <template v-else>
-          <h1 class="title has-text-centered">Hi {{ user.displayName }}</h1>
-        <button @click="doLogout" class="button">Logout</button>
-        </template>
-      </div>
+  <section class="section">
+    <div class="container">
+      <h1 class="title has-text-centered">
+        Rooms
+      </h1>
+      <RoomsComponent :rooms="rooms" />
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
 // @ is an alias to /src
-import { fb, auth } from "@/firebase.js"
-import { mapGetters } from 'vuex';
-
+// import { db } from "@/firebase.js";
+import { mapState } from "vuex";
+import RoomsComponent from "@/components/RoomsComponent.vue";
 export default {
-  name: 'RoomsView',
-  data() {
-    return {
-    }
-  },
-  methods: {
-    async doLogin() {
-      try {
-        const provider = new fb.auth.GoogleAuthProvider();
-        const user = await auth.signInWithPopup(provider);
-        this.user = user.user;
-      } catch (error) {
-        console.error(error.message)
-      }
-    },
-    async doLogout() {
-      try {
-        await auth.signOut();
-        this.user = null;
-      } catch (error) {
-        console.error(error.message)
-      }
-    }
+  name: "RoomsView",
+  components: {
+    RoomsComponent,
   },
   computed: {
-    ...mapGetters(["user"])
-  }
-}
+    ...mapState("rooms", ["rooms"]),
+  },
+  data() {
+    return {};
+  },
+  async created() {
+    // const userCollection = db.collection("users");
+  },
+};
 </script>
